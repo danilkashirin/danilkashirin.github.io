@@ -1,0 +1,139 @@
+<!DOCTYPE html>	
+<html lang="en">	
+<head>	
+<meta charset="UTF-8">	
+<title>Отчет по моделированию электрогенератора</title>	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>	
+</head>	
+<body>	
+<h1>Моделирование электрогенератора: вращение контура в магнитном поле</h1>	
+
+<form id="parametersForm">	
+    <label for="magneticField">Величина магнитного поля (Тл):</label>	
+    <input type="number" id="magneticField" step="0.01" required>	
+
+    <label for="rotationFrequency">Частота вращения (кГц):</label>	
+    <input type="number" id="rotationFrequency" step="0.01" required>	
+
+    <label for="circuitResistance">Сопротивление контура (Ом):</label>	
+    <input type="number" id="circuitResistance" step="0.01" required>	
+
+    <button type="button" onclick="updateCharts()">Обновить графики</button>	
+</form>	
+
+<div>	
+    <canvas id="emfChart"></canvas>	
+</div>	
+<div>	
+    <canvas id="currentChart"></canvas>	
+</div>	
+
+<script>	
+// Настройки для графиков и инициализация контекстов	
+var options1 = {	
+    scales: {	
+        xAxes: [{	
+            scaleLabel: {	
+                display: true,	
+                labelString: 'Время, с'	
+            }	
+        }],	
+        yAxes: [{	
+            scaleLabel: {	
+                display: true,	
+                labelString: 'ЭДС индукции, кВ'	
+            }	
+        }]	
+    }	
+};	
+
+var options2 = {	
+    scales: {	
+        xAxes: [{	
+            scaleLabel: {	
+                display: true,	
+                labelString: 'Время, с'	
+            }	
+        }],	
+        yAxes: [{	
+            scaleLabel: {	
+                display: true,	
+                labelString: 'Сила тока, А'	
+            }	
+        }]	
+    }	
+};	
+
+// Функция обновления графиков	
+function updateCharts() {	
+    var magneticField = parseFloat(document.getElementById('magneticField').value);	
+    var rotationFrequency = parseFloat(document.getElementById('rotationFrequency').value);	
+    var circuitResistance = parseFloat(document.getElementById('circuitResistance').value);	
+    var dt = 0.1; // Шаг времени	
+    var timeMax = 10; // Максимальное значение времени для симуляции	
+
+    var {timeArray, emfValues, currentValues} = simulateGenerator(magneticField, rotationFrequency, circuitResistance)	
+
+    emfData.labels = timeArray;	
+    emfData.datasets[0].data = emfValues;	
+    currentData.labels = timeArray;	
+    currentData.datasets[0].data = currentValues;	
+
+    emfChart.update();	
+    currentChart.update();	
+}	
+
+function simulateGenerator(magneticField, rotationFrequency, circuitResistance) {	
+    let timeArray = [];	
+    let emfValues = [];	
+    let currentValues = [];	
+
+
+    const dt = 0.01;	
+    const timeMax = 10;	
+    let angularVelocity = 2 * Math.PI * rotationFrequency	
+
+    for (let time = 0; time <= timeMax; time += dt) {	
+        let emf = -magneticField * angularVelocity * Math.sin(angularVelocity * time); // Расчет ЭДС	
+        let current = emf / circuitResistance; // Расчет тока	
+
+        timeArray.push(time.toFixed(2)); // Ограничиваем количество знаков после запятой	
+        emfValues.push(emf);	
+        currentValues.push(current);	
+    }	
+
+    return { timeArray, emfValues, currentValues };	
+}	
+
+// Объявляем пустые объекты данных для графиков	
+var emfData = {	
+    labels: [],	
+    datasets: [{	
+        label: 'ЭДС E(t)',	
+        data: [],	
+        fill: false,	
+        borderColor: 'rgb(75, 192, 192)',	
+        tension: 0.1	
+    }]	
+};	
+
+var currentData = {	
+    labels: [],	
+    datasets: [{	
+        label: 'Индукционный ток I(t)',	
+        data: [],	
+        fill: false,	
+        borderColor: 'rgb(255, 99, 132)',	
+        tension: 0.1	
+    }]	
+};	
+
+var emfContext = document.getElementById('emfChart').getContext('2d');	
+var emfChart = new Chart(emfContext, { type: 'line', data: emfData, options: options1 });	
+
+var currentContext = document.getElementById('currentChart').getContext('2d');	
+var currentChart = new Chart(currentContext, { type: 'line', data: currentData, options: options2 });	
+
+</script>	
+</body>	
+</html>	

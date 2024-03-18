@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Моделирование электрической цепи</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1>Моделирование. Замыкание/размыкание цепи.</h1>
+
+<form id="parametersForm">
+    <label for="initialCurrent">Силы тока I0 (A):</label>
+    <input type="number" id="initialCurrent" step="0.01" required>
+    
+    <label for="resistance">Сопротивление R (Ом):</label>
+    <input type="number" id="resistance" step="0.01" required>
+    
+    <label for="inductance">Индуктивность L (Гн):</label>
+    <input type="number" id="inductance" step="0.01" required>
+
+    <button type="button" onclick="updateChart('closing')">График замыкания</button>
+    <button type="button" onclick="updateChart('opening')">График размыкания</button>
+</form>
+
+
+</form>
+
+<div>
+    <canvas id="currentChart"></canvas>
+</div>
+
+<script>
+// Параметры для графика и инициализация контекста канваса
+var options = {
+    scales: {
+        x: {
+            title: {
+                display: true,
+                text: 'Время, с'
+            }
+        },
+        y: {
+            title: {
+                display: true,
+                text: 'Сила тока, А'
+            }
+        }
+    }
+};
+
+var currentData = {
+    labels: [],
+    datasets: [{
+        label: 'Ток I(t)',
+        data: [],
+        fill: false,
+        borderColor: 'rgb(255, 99, 132)',
+        tension: 0.1
+    }]
+};
+
+var currentContext = document.getElementById('currentChart').getContext('2d');
+var currentChart = new Chart(currentContext, { 
+    type: 'line', 
+    data: currentData, 
+    options: options 
+});
+
+function simulateGenerator(initialCurrent, tau, mode) {
+    let timeArray = [];
+    let currentValues = [];
+    let dt = 0.01; // Шаг времени
+    let timeMax = 10; // Максимальное значение времени для симуляции
+
+    for (let time = 0; time <= timeMax; time += dt) {
+        let current;
+        if(mode === 'closing') {
+            // Расчет тока для замыкания цепи
+            current = initialCurrent * (1 - Math.exp(-time / tau));
+        } else {
+            // Расчет тока для размыкания цепи
+            current = initialCurrent * Math.exp(-time / tau);
+        }
+        currentValues.push(current);
+        timeArray.push(time.toFixed(2));
+    }
+
+    return { timeArray, currentValues };
+}
+
+function updateChart(mode) {
+    var initialCurrent = parseFloat(document.getElementById('initialCurrent').value);
+    var resistance = parseFloat(document.getElementById('resistance').value);
+    var inductance = parseFloat(document.getElementById('inductance').value);
+    var tau = inductance / resistance; // Рассчитываем постоянную времени релаксации
+
+    var { timeArray, currentValues } = simulateGenerator(initialCurrent, tau, mode);
+
+    currentData.labels = timeArray;
+    currentData.datasets[0].data = currentValues;
+    currentData.datasets[0].label = mode === 'closing' ? 'Ток при замыкании I(t)' : 'Ток при размыкании I(t)';
+
+    currentChart.update();
+}
+</script>
+</body>
+</html>
+
