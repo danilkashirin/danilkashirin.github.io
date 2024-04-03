@@ -15,7 +15,7 @@
   .container {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Изменим значение на center */
+    align-items: center;
     max-width: 800px;
     margin: auto;
   }
@@ -100,6 +100,11 @@ function updateLissajous() {
   var frequencyY = document.getElementById('frequencyY').value;
   var phaseM = document.getElementById('phaseM').value;
   var phaseK = document.getElementById('phaseK').value;
+
+  if (amplitudeX <= 0 || amplitudeY <= 0 || frequencyX <= 0 || frequencyY <= 0) {
+    alert('Амплитуды и частоты должны быть положительными числами.');
+    return;
+  }
 
   var phaseShift = phaseM / phaseK * Math.PI;
 
