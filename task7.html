@@ -1,0 +1,111 @@
+html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Фигуры Лиссажу</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 20px;
+  }
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Изменим значение на center */
+    max-width: 800px;
+    margin: auto;
+  }
+  #lissajousForm {
+    max-width: 400px;
+    padding: 15px;
+    margin-right: 20px;
+  }
+  input {
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 22px);
+  }
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  canvas {
+    border: 1px solid #ccc;
+    background-color: white;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div id="lissajousForm">
+    <h2>Визуализация сложения колебаний. Фигуры Лиссажу.</h2>
+    Амплитуда X: <input type="number" id="amplitudeX" value="100"><br>
+    Амплитуда Y: <input type="number" id="amplitudeY" value="100"><br>
+    Частота X: <input type="number" id="frequencyX" value="5"><br>
+    Частота Y: <input type="number" id="frequencyY" value="6"><br>
+    Фазовый сдвиг \( \frac{m}{k} \cdot \pi \):<br>
+    Число m: <input type="number" id="phaseM" value="1"><br>
+    Число k: <input type="number" id="phaseK" value="2"><br>
+    <button type="button" onclick="updateLissajous()">Построить фигуру</button>
+  </div>
+  <canvas id="lissajousCanvas" width="400" height="400"></canvas>
+</div>
+
+
+<script>
+function drawLissajous(ax, ay, wx, wy, delta) {
+  var canvas = document.getElementById('lissajousCanvas');
+  var context = canvas.getContext('2d');
+  var width = canvas.width;
+  var height = canvas.height;
+  var cx = width / 2;
+  var cy = height / 2;
+
+  context.clearRect(0, 0, width, height);
+
+  context.beginPath();
+  for (var i = 0; i < 2000; i++) {
+    var t = i / 2000 * 4 * Math.PI;
+    var x = cx + ax * Math.sin(wx * t);
+    var y = cy + ay * Math.cos(wy * t + delta);
+    if (i == 0) {
+      context.moveTo(x, y);
+    } else {
+      context.lineTo(x, y);
+    }
+  }
+  context.strokeStyle = "#000";
+  context.stroke();
+}
+
+function updateLissajous() {
+  var amplitudeX = document.getElementById('amplitudeX').value;
+  var amplitudeY = document.getElementById('amplitudeY').value;
+  var frequencyX = document.getElementById('frequencyX').value;
+  var frequencyY = document.getElementById('frequencyY').value;
+  var phaseM = document.getElementById('phaseM').value;
+  var phaseK = document.getElementById('phaseK').value;
+
+  var phaseShift = phaseM / phaseK * Math.PI;
+
+  drawLissajous(+amplitudeX, +amplitudeY, +frequencyX, +frequencyY, phaseShift);
+}
+
+</script>
+</body>
+</html>
