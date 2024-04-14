@@ -52,65 +52,68 @@
 <body>
     <div class="container">
         <div id="lissajousForm">
-          <h2>Визуализация сложения колебаний. Фигуры Лиссажу.</h2>
-          Амплитуда X (м): <input type="number" id="amplitudeX" value="100"><br>
-          Амплитуда Y (м): <input type="number" id="amplitudeY" value="100"><br>
-          Частота X (Гц): <input type="number" id="frequencyX" value="5"><br>
-          Частота Y (Гц): <input type="number" id="frequencyY" value="6"><br>
-          Фазовый сдвиг \( \frac{m}{k} \cdot \pi \) (рад):<br>
-          Число m: <input type="number" id="phaseM" value="1"><br>
-          Число k: <input type="number" id="phaseK" value="2"><br>
-          <button type="button" onclick="updateLissajous()">Построить фигуру</button>
+            <h2>Визуализация сложения колебаний. Фигуры Лиссажу.</h2>
+            Амплитуда X (м): <input type="number" id="amplitudeX" value="100" min="0" placeholder=">0"><br>
+            Амплитуда Y (м): <input type="number" id="amplitudeY" value="100" min="0" placeholder=">0"><br>
+            Частота X (Гц): <input type="number" id="frequencyX" value="5" min="0" placeholder=">0"><br>
+            Частота Y (Гц): <input type="number" id="frequencyY" value="6" min="0" placeholder=">0"><br>
+            Фазовый сдвиг \( \frac{m}{k} \cdot \pi \) (рад):<br>
+            Число m: <input type="number" id="phaseM" value="1" placeholder=">0"><br>
+            Число k: <input type="number" id="phaseK" value="2" placeholder=">0"><br>
+            <button type="button" onclick="updateLissajous()">Построить фигуру</button>
         </div>
         <canvas id="lissajousCanvas" width="400" height="400"></canvas>
-      </div>
-      
-
+    </div>
 
 <script>
 function drawLissajous(ax, ay, wx, wy, delta) {
-  var canvas = document.getElementById('lissajousCanvas');
-  var context = canvas.getContext('2d');
-  var width = canvas.width;
-  var height = canvas.height;
-  var cx = width / 2;
-  var cy = height / 2;
+    var canvas = document.getElementById('lissajousCanvas');
+    var context = canvas.getContext('2d');
+    var width = canvas.width;
+    var height = canvas.height;
+    var cx = width / 2;
+    var cy = height / 2;
 
-  context.clearRect(0, 0, width, height);
+    context.clearRect(0, 0, width, height);
 
-  context.beginPath();
-  for (var i = 0; i < 2000; i++) {
-    var t = i / 2000 * 4 * Math.PI;
-    var x = cx + ax * Math.sin(wx * t);
-    var y = cy + ay * Math.cos(wy * t + delta);
-    if (i == 0) {
-      context.moveTo(x, y);
-    } else {
-      context.lineTo(x, y);
+    context.beginPath();
+    for (var i = 0; i < 2000; i++) {
+        var t = i / 2000 * 4 * Math.PI;
+        var x = cx + ax * Math.sin(wx * t);
+        var y = cy + ay * Math.cos(wy * t + delta);
+        if (i === 0) {
+            context.moveTo(x, y);
+        } else {
+            context.lineTo(x, y);
+        }
     }
-  }
-  context.strokeStyle = "#000";
-  context.stroke();
+    context.strokeStyle = "#000";
+    context.stroke();
 }
 
 function updateLissajous() {
-  var amplitudeX = document.getElementById('amplitudeX').value;
-  var amplitudeY = document.getElementById('amplitudeY').value;
-  var frequencyX = document.getElementById('frequencyX').value;
-  var frequencyY = document.getElementById('frequencyY').value;
-  var phaseM = document.getElementById('phaseM').value;
-  var phaseK = document.getElementById('phaseK').value;
+    var amplitudeX = Number(document.getElementById('amplitudeX').value);
+    var amplitudeY = Number(document.getElementById('amplitudeY').value);
+    var frequencyX = Number(document.getElementById('frequencyX').value);
+    var frequencyY = Number(document.getElementById('frequencyY').value);
+    var phaseM = Number(document.getElementById('phaseM').value);
+    var phaseK = Number(document.getElementById('phaseK').value);
 
-  if (amplitudeX <= 0 || amplitudeY <= 0 || frequencyX <= 0 || frequencyY <= 0) {
-    alert('Амплитуды и частоты должны быть положительными числами.');
-    return;
-  }
+    if (amplitudeX <= 0 || amplitudeY <= 0 || frequencyX <= 0 || frequencyY <= 0) {
+        alert('Амплитуды и частоты должны быть положительными числами');
+        return;
+    }
 
-  var phaseShift = phaseM / phaseK * Math.PI;
+    if (phaseM < 0 || phaseK <= 0) {
+        alert('Числа k и m должны быть положительными и ненулевыми.');
+        return;
+    }
 
-  drawLissajous(+amplitudeX, +amplitudeY, +frequencyX, +frequencyY, phaseShift);
+    var phaseShift = phaseM / phaseK * Math.PI;
+
+    drawLissajous(amplitudeX, amplitudeY, frequencyX, frequencyY, phaseShift);
 }
-
 </script>
+
 </body>
 </html>
