@@ -35,11 +35,11 @@
     <h1>Амплитудная модуляция сигнала</h1>
     <div class="form-container">
         <div class="input-group">
-            <label for="fc">Частота несущего сигнала (kHz):</label>
+            <label for="fc">Частота несущего сигнала (Hz):</label>
             <input type="text" id="fc" value="10">
         </div>
         <div class="input-group">
-            <label for="fm">Частота модулирующего сигнала (kHz):</label>
+            <label for="fm">Частота модулирующего сигнала (Hz):</label>
             <input type="text" id="fm" value="2">
         </div>
         <div class="input-group">
@@ -69,13 +69,13 @@
         const frequencyDomainContext = document.getElementById('spectrumChart').getContext('2d');
 
         let sharedChart = createChart(timeDomainContext, 'line', 'Время (секунды)', 'Амплитуда');
-        let spectrumChart = createChart(frequencyDomainContext, 'line', 'Частота (kHz)', 'Магнитуда (dB)');
+        let spectrumChart = createChart(frequencyDomainContext, 'line', 'Частота (Hz)', 'Магнитуда (dB)');
 
         function updateValues() {
             const fc = parseFloat(fcInput.value);
             const fm = parseFloat(fmInput.value);
             const mod = parseFloat(modInput.value);
-            const sampleRate = 625;
+            const sampleRate = 1250;
 
             if (!validateInputs(fc, fm, mod)) {
                 errorDiv.textContent = 'Ошибка: проверьте введённые данные! Значения должны быть больше 0';
@@ -85,7 +85,7 @@
             errorDiv.textContent = '';
 
             const numPoints = 2500;
-            const duration = 3;
+            const duration = 2;
             const t = Array.from({length: numPoints}, (_, i) => i * duration / (numPoints - 1));
 
             const carrier = t.map(t => Math.cos(2 * Math.PI * fc * t));
@@ -118,7 +118,7 @@
             const messageSpectrum = calculateSpectrum(message, sampleRate);
             const amSpectrum = calculateSpectrum(amSignal, sampleRate);
 
-            const pointsToShow = 500;
+            const pointsToShow = 700;
             const numPoints = carrier.length;
             
             const frequencyLabels = Array.from({ length: pointsToShow }, (_, i) => (i * sampleRate) / numPoints);
@@ -159,7 +159,7 @@
                     fill: false,
                     data: []
                 }];
-            } else if (xAxisTitle === 'Частота (kHz)') {
+            } else if (xAxisTitle === 'Частота (Hz)') {
                 datasetConfig = [{
                     label: 'Спектр несущего сигнала',
                     borderColor: 'red',
