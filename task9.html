@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Амплитудная модуляция сигнала</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .form-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-right: 10px;
+        }
+        .input-group input {
+            width: 50px;
+        }
+        .input-group label {
+            margin-right: 5px;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Амплитудная модуляция сигнала</h1>
+    <div class="form-container">
+        <div class="input-group">
+            <label for="fc">Частота несущего сигнала (kHz):</label>
+            <input type="text" id="fc" value="10">
+        </div>
+        <div class="input-group">
+            <label for="fm">Частота модулирующего сигнала (kHz):</label>
+            <input type="text" id="fm" value="2">
+        </div>
+        <div class="input-group">
+            <label for="mod">Индекс модуляции:</label>
+            <input type="text" id="mod" value="0.5">
+        </div>
+        <button onclick="updateValues()">Построить графики</button>
+    </div>
+    <div class="error-message" id="error"></div>
+    <div>
+        <h2>Сигналы во времени</h2>
+        <canvas id="sharedChart" width="1800" height="340"></canvas>
+    </div>
+    <div>
+        <h2>Спектры сигналов</h2>
+        <canvas id="spectrumChart" width="1800" height="340"></canvas>
+    </div>
+
+    <script src="dsp.js/dsp.js"></script>
+
+    <script>
+        const fcInput = document.getElementById('fc');
+        const fmInput = document.getElementById('fm');
+        const modInput = document.getElementById('mod');
+        const errorDiv = document.getElementById('error');
+        const timeDomainContext = document.getElementById('sharedChart').getContext('2d');
+        const frequencyDomainContext = document.getElementById('spectrumChart').getContext('2d');
+
+        let sharedChart = createChart(timeDomainContext, 'line', 'Время (секунды)', 'Амплитуда');
+        let spectrumChart = createChart(frequencyDomainContext, 'line', 'Частота (kHz)', 'Магнитуда (dB)');
+
+        function updateValues() {
+            const fc = parseFloat(fcInput.value);
+            const fm = parseFloat(fmInput.value);
+            const mod = parseFloat(modInput.value);
+            const sampleRate = 625;
+
+            if (!validateInputs(fc, fm, mod)) {
+                errorDiv.textContent = 'Ошибка: проверьте введённые данные! Значения должны быть больше 0';
+                return;
+            }
+
+            errorDiv.textContent = '';
+
+            const numPoints = 2500;
+            const duration = 3;
+            const t = Array.from({length: numPoints}, (_, i) => i * duration / (numPoints - 1));
+
+            const carrier = t.map(t => Math.cos(2 * Math.PI * fc * t));
+            const message = t.map(t => Math.sin(2 * Math.PI * fm * t));
+            const amSignal = t.map((_, i) => (1 + mod * message[i]) * carrier[i]);
+
+            updateChart(sharedChart, t, carrier, message, amSignal);
+            updateSpectrums(carrier, message, amSignal, sampleRate);
+        }
+
+        function validateInputs(fc, fm, mod) {
+            return fc > 0 && fm > 0 && mod >= 0 && !isNaN(fc) && !isNaN(fm) && !isNaN(mod);
+        }
+
+        function adjustSignalLength(signal) {
+            let length = 1;
+            while (length < signal.length) length <<= 1;
+            return signal.concat(new Array(length - signal.length).fill(0));
+        }
+
+        function calculateSpectrum(signal, sampleRate) {
+            signal = adjustSignalLength(signal);
+            const fft = new FFT(signal.length, sampleRate);
+            fft.forward(signal);
+            return fft.spectrum.map(v => 20 * Math.log10(v + 1E-12));
+        }
+
+        function updateSpectrums(carrier, message, amSignal, sampleRate) {
+            const carrierSpectrum = calculateSpectrum(carrier, sampleRate);
+            const messageSpectrum = calculateSpectrum(message, sampleRate);
+            const amSpectrum = calculateSpectrum(amSignal, sampleRate);
+
+            const pointsToShow = 500;
+            const numPoints = carrier.length;
+            
+            const frequencyLabels = Array.from({ length: pointsToShow }, (_, i) => (i * sampleRate) / numPoints);
+            
+            spectrumChart.data.labels = frequencyLabels;
+            spectrumChart.data.datasets[0].data = carrierSpectrum.slice(0, pointsToShow);
+            spectrumChart.data.datasets[1].data = messageSpectrum.slice(0, pointsToShow);
+            spectrumChart.data.datasets[2].data = amSpectrum.slice(0, pointsToShow);
+            spectrumChart.update();
+        }
+
+
+
+        function updateChart(chart, labels, carrierData, messageData, amData) {
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = carrierData;
+            chart.data.datasets[1].data = messageData;
+            chart.data.datasets[2].data = amData;
+            chart.update();
+        }
+
+        function createChart(context, type, xAxisTitle, yAxisTitle) {
+            let datasetConfig = [];
+            if (xAxisTitle === 'Время (секунды)') {
+                datasetConfig = [{
+                    label: 'Несущий сигнал',
+                    borderColor: 'red',
+                    fill: false,
+                    data: []
+                }, {
+                    label: 'Информационный сигнал',
+                    borderColor: 'blue',
+                    fill: false,
+                    data: []
+                }, {
+                    label: 'AM сигнал',
+                    borderColor: 'green',
+                    fill: false,
+                    data: []
+                }];
+            } else if (xAxisTitle === 'Частота (kHz)') {
+                datasetConfig = [{
+                    label: 'Спектр несущего сигнала',
+                    borderColor: 'red',
+                    fill: false,
+                    data: []
+                }, {
+                    label: 'Спектр информационного сигнала',
+                    borderColor: 'blue',
+                    fill: false,
+                    data: []
+                }, {
+                    label: 'Спектр AM сигнала',
+                    borderColor: 'green',
+                    fill: false,
+                    data: []
+                }];
+            }
+            return new Chart(context, {
+                type: type,
+                data: {
+                    labels: [],
+                    datasets: datasetConfig
+                },
+                options: {
+                    scales: {
+                        x: { type: 'linear', title: { display: true, text: xAxisTitle } },
+                        y: { title: { display: true, text: yAxisTitle } }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
