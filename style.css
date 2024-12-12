@@ -1,14 +1,11 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Monaco", sans-serif;
     margin: 0;
     padding: 0;
     line-height: 1.6;
     background-color: #f9f9f9;
     color: #333;
-}
-
-h1, h2, h3 {
-    color: #ffffff;
+    font-size: 16px;
 }
 
 header {
@@ -16,6 +13,9 @@ header {
     color: #fff;
     padding: 10px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 section header {
@@ -25,6 +25,9 @@ section header {
     text-align: center;
     margin: -20px -20px 20px -20px;
     border-radius: 5px 5px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 nav ul {
@@ -38,12 +41,15 @@ nav ul {
 
 nav ul li {
     display: inline;
-    padding: 0 20px;
+    margin-right: 10px;
 }
 
 nav ul li a {
     text-decoration: none;
     color: #000;
+    text-transform: capitalize;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 nav ul li a:hover {
@@ -60,6 +66,22 @@ section {
     margin-top: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 1em;
+    line-height: 1.5;
+    text-align: left;
+    color: #333;
+}
+
+.section__header {
+    background-color: #570218;
+    color: #fff;
+    padding: 2px;
+    text-align: center;
+    margin: -20px -20px 20px -20px;
+    border-radius: 5px 5px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 section article h3 {
@@ -68,26 +90,30 @@ section article h3 {
     padding: 0;
     margin: 0 0 10px 0;
     font-weight: normal;
+    text-transform: none;
 }
-
 
 strong {
     color: #a51a39;
+    font-weight: bold;
+    text-decoration: underline;
 }
 
 em {
     font-style: italic;
     color: #a51a39;
+    text-transform: lowercase;
 }
 
 aside {
     background-color: #ececec;
     border: 1px solid #ccc;
     padding: 10px;
-    text-align: center;
     margin-top: 20px;
     border-radius: 5px;
     font-family: monospace;
+    white-space: pre-wrap;
+    text-align: left;
 }
 
 code {
@@ -96,17 +122,13 @@ code {
     padding: 10px;
     border-radius: 5px;
     overflow-x: auto;
-    font-family: Consolas, "Courier New", monospace;
+    font-family: "Consolas", "Courier New", monospace;
     font-size: 14px;
     display: block;
     white-space: pre-wrap;
     margin: 10px 0;
-}
-
-pre {
-    background-color: transparent;
-    padding: 0;
-    margin: 0;
+    line-height: 1.4;
+    text-transform: none;
 }
 
 blockquote {
@@ -114,6 +136,8 @@ blockquote {
     padding-left: 10px;
     margin: 20px 0;
     font-style: italic;
+    text-align: left;
+    background-color: #f1f1f1;
 }
 
 q {
@@ -128,8 +152,35 @@ footer {
     position: static;
     width: 100%;
     margin-top: 20px;
+    font-size: 0.9em;
 }
 
 footer p {
     margin: 5px 0;
+    text-transform: uppercase;
+}
+
+.assortment__container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.assortment__item {
+    text-align: center;
+    width: 30%;
+    font-size: 1em;
+    line-height: 1.4;
+    font-weight: 400;
+    background-color: #f6f6f6;
+    color: #333;
+    padding: 10px;
+    margin: 10px 0;
+    text-transform: capitalize;
+}
+
+.assortment__item-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    border: 2px solid #ddd;
 }
