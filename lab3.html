@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа 3 - Винный магазин</title>
+    <link rel="stylesheet" href="style.css"> <!-- Подключение внешнего CSS-файла -->
+</head>
+<body>
+
+<header class="header">
+    <h1 class="header__title">Wine Haven</h1>
+</header>
+
+<nav class="nav">
+    <ul class="nav__list">
+        <li class="navitem"><a class="navlink" href="index.html">Главная</a></li>
+        <li class="navitem"><a class="navlink" href="#цитаты">Цитаты и философия</a></li>
+        <li class="navitem"><a class="navlink" href="#ассортимент">Наш ассортимент</a></li>
+        <li class="navitem"><a class="navlink" href="#таблица">Таблица рейтинга</a></li>
+    </ul>
+</nav>
+
+<main class="main">
+    <section class="section">
+        <header class="section__header">
+            <h3 class="section__title">О нашем магазине</h3>
+        </header>
+        <p>Наш магазин предлагает широкий ассортимент <strong class="strong-text">исключительных вин</strong>, созданных
+            с любовью и
+            уважением к традициям. Мы стремимся обеспечить каждому клиенту <em class="em-text">удивительный опыт</em>
+            дегустации и
+            покупки.</p>
+    </section>
+
+    <section id="цитаты" class="section">
+        <header class="section__header">
+            <h3 class="section__title">Цитаты и философия нашего магазина</h3>
+        </header>
+        <blockquote class="blockquote-style">
+            <p><q class="quote-style">В слишком малой дозе вина человек не может найти истину, налейте ему слишком много
+                и он потеряет
+                её.</q></p>
+        </blockquote>
+        <p>Формула успеха нашего вина: Вино = Виноград<sub>высшее качество</sub> + Умение<sup>мастерство</sup></p>
+    </section>
+
+    <section id="ассортимент" class="assortment">
+        <header class="assortment__header">
+            <h3 class="assortment__title">Наш ассортимент</h3>
+        </header>
+        <div class="assortment__container">
+            <div class="assortment__item">
+                <h4 class="assortment__item-title">Красное вино</h4>
+                <img class="assortment__item-image" src="wine1.jpeg" alt="Вино 1">
+            </div>
+            <div class="assortment__item">
+                <h4 class="assortment__item-title">Белое вино</h4>
+                <img class="assortment__item-image" src="wine2.jpeg" alt="Вино 2">
+            </div>
+            <div class="assortment__item">
+                <h4 class="assortment__item-title">Розовое вино</h4>
+                <img class="assortment__item-image" src="wine3.jpeg" alt="Вино 3">
+            </div>
+        </div>
+    </section>
+
+    <section id="таблица" class="section">
+        <header class="section__header">
+            <h3 class="section__title">Таблица вин</h3>
+        </header>
+        <table class="wine-table">
+            <thead>
+            <tr>
+                <th>Название вина</th>
+                <th>Регион</th>
+                <th>Рейтинг</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Красное Вино А</td>
+                <td>Франция</td>
+                <td>8.5</td>
+            </tr>
+            <tr>
+                <td>Белое Вино Б</td>
+                <td>Италия</td>
+                <td>9.0</td>
+            </tr>
+            <tr>
+                <td>Розовое Вино C</td>
+                <td>Испания</td>
+                <td>8.0</td>
+            </tr>
+            <tr>
+                <td>Красное Вино D</td>
+                <td>Чили</td>
+                <td>8.8</td>
+            </tr>
+            <tr>
+                <td>Белое Вино E</td>
+                <td>Германия</td>
+                <td>9.3</td>
+            </tr>
+            <tr>
+                <td>Игристое Вино F</td>
+                <td>Франция</td>
+                <td>9.5</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<footer class="footer">
+    <p class="footer__text">&copy; 2024 Wine Haven</p>
+    <p class="footer__text"><strong class="strong-text">Важно:</strong> Все права защищены.
+        <del>Пить вредно.</del>
+    </p>
+</footer>
+
+</body>
+</html>
