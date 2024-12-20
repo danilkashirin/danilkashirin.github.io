@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа 3 - Винный магазин</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+    <script src="filter.js" defer></script>
+</head>
+<body>
+
+<header>
+    <a class="navlink" href="index.html">
+        <h1>Wine Haven</h1>
+    </a>
+</header>
+
+<nav class="nav">
+    <ul class="nav__list">
+        <li class="navitem"><a class="navlink" href="lab5.html">Конструктор заказа</a></li>
+        <li class="navitem"><a class="navlink" href="diogen.html">Диоген</a></li>
+    </ul>
+</nav>
+
+<main class="main">
+    <section id="фильтр" class="section">
+        <header class="section__header">
+            <h3>Фильтр Вин</h3>
+        </header>
+        <form id="filterForm">
+            <label for="ratingMin">Минимальный рейтинг:</label>
+            <input type="range" id="ratingMin" min="0" max="10" step="0.5" value="0"
+                   oninput="document.getElementById('ratingMinValue').textContent = this.value;">
+            <span id="ratingMinValue">0</span>
+
+            <label for="ratingMax">Максимальный рейтинг:</label>
+            <input type="range" id="ratingMax" min="0" max="10" step="0.5" value="10"
+                   oninput="document.getElementById('ratingMaxValue').textContent = this.value;">
+            <span id="ratingMaxValue">10</span>
+
+            <fieldset>
+                <legend>Страны:</legend>
+                <label><input type="checkbox" name="country" value="Франция"> Франция</label>
+                <label><input type="checkbox" name="country" value="Италия"> Италия</label>
+                <label><input type="checkbox" name="country" value="Португалия"> Португалия</label>
+                <label><input type="checkbox" name="country" value="Испания"> Испания</label>
+                <label><input type="checkbox" name="country" value="США"> США</label>
+                <label><input type="checkbox" name="country" value="Новая Зеландия"> Новая Зеландия</label>
+                <label><input type="checkbox" name="country" value="Австралия"> Австралия</label>
+                <label><input type="checkbox" name="country" value="Аргентина"> Аргентина</label>
+                <label><input type="checkbox" name="country" value="Чили"> Чили</label>
+                <label><input type="checkbox" name="country" value="Германия"> Германия</label>
+                <label><input type="checkbox" name="country" value="ЮАР"> ЮАР</label>
+                <label><input type="checkbox" name="country" value="Венгрия"> Венгрия</label>
+            </fieldset>
+
+            <fieldset>
+                <legend>Типы напитков:</legend>
+                <label><input type="checkbox" name="type" value="Красное"> Красное</label>
+                <label><input type="checkbox" name="type" value="Белое"> Белое</label>
+                <label><input type="checkbox" name="type" value="Игристое"> Игристое</label>
+                <label><input type="checkbox" name="type" value="Портвейн"> Портвейн</label>
+                <label><input type="checkbox" name="type" value="Десертное"> Десертное</label>
+            </fieldset>
+
+            <button type="submit">Применить фильтр</button>
+            <button type="button" id="resetFilters">Очистить фильтр</button>
+            <button type="button" id="saveOrder">Сохранить заказ</button>
+            <button type="button" id="loadOrder">Загрузить последний заказ</button>
+        </form>
+
+        <div id="filteredResults">
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <p class="footer__text">&copy; 2024 Wine Haven</p>
+    <p class="footer__text"><strong class="strong-text">Важно:</strong> Все права защищены.
+        <del>Пить вредно.</del>
+    </p>
+</footer>
+
+</body>
+</html>
