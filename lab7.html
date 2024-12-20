@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа 7 - Винный магазин</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+</head>
+<body>
+
+<header>
+    <a class="navlink" href="index.html">
+        <h1>Wine Haven</h1>
+    </a>
+</header>
+
+<nav class="nav">
+    <ul class="nav__list">
+        <li class="nav__item"><a class="nav__link" href="index.html">Главная</a></li>
+        <li class="nav__item"><a class="nav__link" href="#ассортимент">Наш ассортимент</a></li>
+    </ul>
+</nav>
+
+<main class="main">
+
+    <section id="ассортимент" class="assortment">
+        <header class="assortment__header">
+            <h3 class="assortment__title">Наш ассортимент</h3>
+        </header>
+        <div class="slider">
+            <div class="slides">
+                <div class="slide"><img src="wine1.jpeg" alt="Вино 1"></div>
+                <div class="slide"><img src="wine2.jpeg" alt="Вино 2"></div>
+                <div class="slide"><img src="wine3.jpeg" alt="Вино 3"></div>
+            </div>
+            <div class="button_slider prev" onclick="moveSlide(-1)">&#10094;</div>
+            <div class="button_slider next" onclick="moveSlide(1)">&#10095;</div>
+        </div>
+        <script src="slider.js"></script>
+
+    </section>
+</main>
+
+<footer class="footer">
+    <p class="footer__text">&copy; 2024 Wine Haven</p>
+    <p class="footer__text"><strong class="strong-text">Важно:</strong> Все права защищены.
+        <del>Пить вредно.</del>
+    </p>
+</footer>
+
+</body>
+</html>

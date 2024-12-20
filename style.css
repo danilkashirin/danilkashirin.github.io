@@ -301,3 +301,54 @@ form input[type="checkbox"] {
     transform: scale(1.2);
     accent-color: #570218;
 }
+
+.slider {
+    position: relative;
+    width: 95%;
+    max-width: 800px;
+    margin: 20px auto;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.slide img {
+    width: 100%;
+    display: block;
+    border-radius: 10px;
+}
+
+.button__slider {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgb(57, 2, 2);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+button:hover {
+    background-color: rgb(255, 204, 0);
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
