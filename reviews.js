@@ -13,9 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.json();
             })
             .then(data => {
-                const currentDateTime = new Date().toLocaleString(); // Текущая дата и время
+                const currentDateTime = new Date().toLocaleString();
 
-                // Добавляем дату получения к каждому загруженному отзыву
+
                 const fetchedReviews = data.map(review => ({
                     ...review,
                     date: currentDateTime
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const userReviews = JSON.parse(localStorage.getItem("reviews")) || [];
                 const allReviews = fetchedReviews.concat(userReviews);
 
-                // Сортируем отзывы так, чтобы у тех, у кого есть дата, они были в начале
+
                 allReviews.sort((a, b) => {
                     if (a.date && b.date) {
                         return new Date(b.date) - new Date(a.date);
