@@ -11,7 +11,7 @@ document.getElementById("reviewForm").addEventListener("submit", function(event)
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
     const review = document.getElementById("review").value;
-    const date = new Date().toLocaleString(); // Добавляем текущую дату и время
+    const date = new Date().toLocaleString();
 
     const newReview = {
         name: name,
@@ -24,9 +24,7 @@ document.getElementById("reviewForm").addEventListener("submit", function(event)
     existingReviews.push(newReview);
     localStorage.setItem("reviews", JSON.stringify(existingReviews));
 
-    // Очистка формы после отправки
     document.getElementById("reviewForm").reset();
 
-    // Перенаправление на страницу с отзывами
     window.location.href = "lab6.html";
 });

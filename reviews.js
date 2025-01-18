@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(data => {
                 const currentDateTime = new Date().toLocaleString();
 
-
                 const fetchedReviews = data.map(review => ({
                     ...review,
                     date: currentDateTime
@@ -23,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const userReviews = JSON.parse(localStorage.getItem("reviews")) || [];
                 const allReviews = fetchedReviews.concat(userReviews);
-
 
                 allReviews.sort((a, b) => {
                     if (a.date && b.date) {
